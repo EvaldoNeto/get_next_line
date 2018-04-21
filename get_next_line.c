@@ -42,9 +42,9 @@ int get_next_line(const int fd, char **line)
   n = BUFF_SIZE;
   i = 0;
   if (!buff)
-    if(!(buff = (char *)ft_memalloc(sizeof(char *) * (BUFF_SIZE + 1))))
+    if (!(buff = (char *)ft_memalloc(sizeof(char *) * (BUFF_SIZE + 1))))
       return (-1);
-  if(!(mopa = (char *)ft_memalloc(sizeof(char *) * (BUFF_SIZE + 1))))
+  if (!(mopa = (char *)ft_memalloc(sizeof(char *) * (BUFF_SIZE + 1))))
       return (-1);
   if (!(*buff))
     n = read(fd, buff, BUFF_SIZE);
@@ -60,11 +60,16 @@ int get_next_line(const int fd, char **line)
       i = leading_newline(buff);
       *line = ft_strjoin(*line, ft_strsub(buff, 0, i));
       ft_memmove(buff, buff + i + 1, ft_strlen(buff + i));
+	  ft_putstr(":\t PORRA :");
+	  free(mopa);
+	  free(buff);
+	  buff = NULL;
     }
   else
     {
       i = leading_newline(buff);
       *line = ft_strsub(buff, 0, i);
+	  ft_putstr(":\t PORRA :");
       ft_memmove(buff, buff + i + 1, ft_strlen(buff + i));
     }
   /*if (buff[0] == '\0')
@@ -73,7 +78,7 @@ int get_next_line(const int fd, char **line)
       free(buff);
       buff = NULL;
       }*/
-  free(mopa);
+  //free(mopa);
   return (n < BUFF_SIZE) ? (0) : (1);
 }
 
@@ -90,14 +95,12 @@ int main()
   ft_putnbr(BUFF_SIZE);
   ft_putchar('\n');
   fd = open("tests/in_the_name", O_RDONLY);
-  while (i < 41)
+  while (i < 40)
     {
       n = get_next_line(fd, line);
       ft_putnbr(n);
       ft_putstr(":\t");
       ft_putstr(*line);
-      ft_putstr("\t:");
-      ft_putnbr((int)ft_strlen(*line));
       ft_putchar('\n');
       i++;
     }
