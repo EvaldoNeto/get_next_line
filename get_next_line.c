@@ -47,39 +47,46 @@ int get_next_line(const int fd, char **line)
   if (!(mopa = (char *)ft_memalloc(sizeof(char *) * (BUFF_SIZE + 1))))
       return (-1);
   if (!(*buff))
-    n = read(fd, buff, BUFF_SIZE);
+      n = read(fd, buff, BUFF_SIZE);
   if (!check_newline(buff))
     {
       *line = ft_strcpy(mopa, buff);
       n = read(fd, buff, BUFF_SIZE);
       while (!check_newline(buff))
 	{
+	  if (n < BUFF_SIZE && !check_newline(buff))
+	    {
+	      free(buff);
+	      buff = NULL;
+	      return (0);
+	    }
 	  *line = ft_strjoin(*line, buff);
 	  n = read(fd, buff, BUFF_SIZE);
 	}
       i = leading_newline(buff);
       *line = ft_strjoin(*line, ft_strsub(buff, 0, i));
-      ft_memmove(buff, buff + i + 1, ft_strlen(buff + i));
-	  ft_putstr(":\t PORRA :");
-	  free(mopa);
+      free(mopa);
+      if (!check_newline(buff))
+	{
 	  free(buff);
 	  buff = NULL;
+	}
+      else
+	ft_memmove(buff, buff + i + 1, ft_strlen(buff + i));
     }
   else
     {
       i = leading_newline(buff);
       *line = ft_strsub(buff, 0, i);
-	  ft_putstr(":\t PORRA :");
-      ft_memmove(buff, buff + i + 1, ft_strlen(buff + i));
+      if (!check_newline(buff))
+	{
+	  free(buff);
+	  buff = NULL;
+	}
+      else
+	ft_memmove(buff, buff + i + 1, ft_strlen(buff + i));
     }
-  /*if (buff[0] == '\0')
-    {
-      //ft_putstr("\nPORRA\n");
-      free(buff);
-      buff = NULL;
-      }*/
-  //free(mopa);
-  return (n < BUFF_SIZE) ? (0) : (1);
+  return (1);
 }
 
 int main()
@@ -95,15 +102,18 @@ int main()
   ft_putnbr(BUFF_SIZE);
   ft_putchar('\n');
   fd = open("tests/in_the_name", O_RDONLY);
-  while (i < 40)
+  while (get_next_line(fd, line))
     {
-      n = get_next_line(fd, line);
       ft_putnbr(n);
       ft_putstr(":\t");
       ft_putstr(*line);
       ft_putchar('\n');
       i++;
     }
+  ft_putnbr(n);
+  ft_putstr(":\t");
+  ft_putstr(*line);
+  ft_putchar('\n');
   /*get_next_line(fd, line);
   ft_putstr(*line);
   ft_putchar('\n');
