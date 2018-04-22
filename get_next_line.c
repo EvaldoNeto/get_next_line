@@ -54,13 +54,18 @@ int get_next_line(const int fd, char **line)
       n = read(fd, buff, BUFF_SIZE);
       while (!check_newline(buff))
 	{
-	  if (n < BUFF_SIZE && !check_newline(buff))
+	  if (n != 0)
+	      *line = ft_strjoin(*line, buff);	  
+	  if (n < BUFF_SIZE)
 	    {
+	      free(mopa);
+	      ft_putstr("N -> ");
+	      ft_putnbr(n);
+	      ft_putstr("   ");
 	      free(buff);
 	      buff = NULL;
 	      return (0);
 	    }
-	  *line = ft_strjoin(*line, buff);
 	  n = read(fd, buff, BUFF_SIZE);
 	}
       i = leading_newline(buff);
@@ -93,26 +98,32 @@ int main()
 {
   char **line;
   int fd;
-  int n;
   int i;
+  int n;
 
+  n = 0;
   i = 0;
-  n = 10;
   line = (char **)ft_memalloc(sizeof(char *));
   ft_putnbr(BUFF_SIZE);
   ft_putchar('\n');
   fd = open("tests/in_the_name", O_RDONLY);
   while (get_next_line(fd, line))
     {
-      ft_putnbr(n);
+      ft_putnbr(ft_strlen(*line));
       ft_putstr(":\t");
       ft_putstr(*line);
       ft_putchar('\n');
       i++;
+      n+= ft_strlen(*line);
     }
-  ft_putnbr(n);
+  ft_putnbr(ft_strlen(*line));
   ft_putstr(":\t");
   ft_putstr(*line);
+  ft_putchar('\n');
+  n+= ft_strlen(*line);
+  ft_putchar('\n');
+  ft_putstr(":\t");
+  ft_putnbr(n);
   ft_putchar('\n');
   /*get_next_line(fd, line);
   ft_putstr(*line);
