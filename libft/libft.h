@@ -24,6 +24,14 @@ typedef struct		s_list
 	struct s_list	*next;
 }					t_list;
 
+typedef struct s_btree
+{
+  void *data;
+  size_t data_size;
+  struct s_btree *right;
+  struct s_btree *left;
+} t_btree;
+
 void				ft_putchar(char c);
 void				ft_putstr(char *str);
 void				ft_putendl(char const *s);
@@ -83,5 +91,8 @@ void				ft_lstdel(t_list **alst, void (*del)(void *, size_t));
 void				ft_lstadd(t_list **alst, t_list *new);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
+t_btree				*btree_create_node(void const *data, size_t data_size);
+void				btree_apply_postorder(t_btree *root, void (*applyf)(char *));
+int				btree_node_level(t_btree *root, t_btree *node, int i);
 
 #endif
