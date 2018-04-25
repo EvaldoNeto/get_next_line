@@ -136,7 +136,12 @@ int main()
   tree->left->left = btree_create_node("4", sizeof(char) + 1);
   tree->left->right = btree_create_node("5", sizeof(char) + 1);
   tree->right = btree_create_node("3", sizeof(char) + 1);
+  //tree->right->right = btree_create_node("7", sizeof(char) + 1);
+  tree->right->left = btree_create_node("7", sizeof(char) + 1);
 
+  ft_putstr("height: ");
+  ft_putnbr(btree_height(tree));
+  ft_putstr("\n");
   if ((n = btree_node_level(tree, btree_create_node("3", sizeof(char) + 1), 1)))
     {
       ft_putstr("\nPORRA\n");
@@ -150,6 +155,29 @@ int main()
   ft_putchar('\n');
   btree_apply_postorder(tree, &ft_putstr);
   ft_putchar('\n');
-  
+  n = btree_height(tree);
+  btree_print_level(tree, 2);
+  ft_putchar('\n');
+  btree_print_level(tree, 3);
+  ft_putchar('\n');
+  ft_putnbr(btree_nodes_per_level(tree, 3));
+  ft_putchar('\n');
+
+  t_btree **test;
+
+  test = (t_btree **)malloc(sizeof(t_btree *) * (btree_nodes_per_level(tree, 3) + 1));
+  btree_nodes_in_level(test, tree, 3);
+  test[4] = NULL;
+  int i = 0;
+  while (test[i])
+    {
+      if (!(test[i]->data))
+	ft_putstr("(null)");
+      else
+	ft_putstr(test[i]->data);
+      i++;
+    }
+  ft_putstr("\n");
+  btree_print(tree, 0);
   return (0);
 }

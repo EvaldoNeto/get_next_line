@@ -78,7 +78,14 @@ SRCS =		ft_atoi.c	\
 		ft_lstmap.c	\
 		btree_create_node.c	\
 		btree_apply_postorder.c	\
-		btree_node_level.c	
+		btree_node_level.c	\
+		ft_max.c		\
+		btree_height.c		\
+		btree_print.c		\
+		btree_print_level.c	\
+		ft_power.c		\
+		btree_nodes_per_level.c \
+		btree_nodes_in_level.c
 
 OBJ = $(SRCS:.c=.o)
 

@@ -1,0 +1,8 @@
+#include "libft.h"
+
+void btree_print(t_btree *root)
+{
+  int height;
+
+  height = btree_height(root);
+}
