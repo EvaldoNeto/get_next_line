@@ -6,7 +6,7 @@
 /*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/26 17:38:53 by eneto             #+#    #+#             */
-/*   Updated: 2018/04/26 23:22:37 by eneto            ###   ########.fr       */
+/*   Updated: 2018/04/26 23:02:26 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,13 @@ t_btree			*btree_insert_avl(t_btree **ptr, void *data, size_t data_size,
 {
 	int balance;
 
+	ft_putstr("avl 1\n");
 	if (!(*ptr))
+	{
+		ft_putstr("paoskd\n");
 		return (*ptr = btree_create_node(data, data_size));
+	}
+	ft_putstr("avl 2\n");
 	if ((*cmpf)(data, (*ptr)->data) < 0)
 		(*ptr)->left = btree_insert_avl(&((*ptr)->left), data, data_size, cmpf);
 	else if ((*cmpf)(data, (*ptr)->data) > 0)
@@ -44,7 +49,7 @@ t_btree			*btree_insert_avl(t_btree **ptr, void *data, size_t data_size,
 		return (*ptr = btree_left_rotate((*ptr)));
 	if (balance > 1 && (*cmpf)(data, (*ptr)->left->data) > 0)
 		return (rotate_left_right(ptr));
-	if (balance < -1 && (*cmpf)(data, (*ptr)->right->data) < 0)
+	if (balance < 1 && (*cmpf)(data, (*ptr)->right->data) < 0)
 		return (rotate_right_left(ptr));
 	return ((*ptr));
 }

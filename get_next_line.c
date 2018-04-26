@@ -6,7 +6,7 @@
 /*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/26 20:19:50 by eneto             #+#    #+#             */
-/*   Updated: 2018/04/26 22:51:43 by eneto            ###   ########.fr       */
+/*   Updated: 2018/04/26 23:22:08 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ int no_newline(const int fd, char *buff, char **line, int n)
   *line = ft_strdup(buff);
   if((n = read(fd, buff, BUFF_SIZE)) == -1)
     {
-      ft_putstr("PRIMEIRO IF\n");
       *line = NULL;
       return (-1);
     }
@@ -61,15 +60,14 @@ int no_newline(const int fd, char *buff, char **line, int n)
 	*line = ft_strjoin(*line, ft_strsub(buff, 0, n));
       if (n < BUFF_SIZE)
 	  {
-	  free(buff);
-	  buff = NULL;
-	  return (0);
+		  free(buff);
+		  buff = NULL;
+		  return (0);
 	  }
       if((n = read(fd, buff, BUFF_SIZE)) == - 1)
 	  {
-	  ft_putstr("SEGUNDO IF\n");
-	  *line = NULL;
-	  return (-1);
+		  *line = NULL;
+		  return (-1);
 	  }
   }
   i = leading_newline(buff);
@@ -104,23 +102,21 @@ static int compare_files(void *data1, void *data2)
   t_file x;
   t_file y;
 
-  ft_putstr("c1\n");
   x = *(t_file *)data1;
-  ft_putstr("c2\n");
-  y = *(t_file *)data2;
-  ft_putstr("c3\n");
+  y = *(t_file *)data2;;
   if (x.fd < y.fd)
-  {
-	  ft_putstr("c4\n");
 	  return (-1);
-  }
   else if(x.fd > y.fd)
-  {
-	  ft_putstr("c4\n");
 	  return (1);
-  }
-  ft_putstr("c4\n");
   return (0);
+}
+
+static void print_fd(void *data1)
+{
+	t_file *temp;
+
+	temp = (t_file *)data1;
+	ft_putnbr(temp->fd);
 }
 
 int get_next_line(const int fd, char **line)
@@ -130,14 +126,12 @@ int get_next_line(const int fd, char **line)
   int n;
   t_btree *node;
 
+  btree_print(files, 0, &print_fd);
   temp.fd = fd;
   temp.buffer = NULL;
-  ft_putstr("1\n");
   if (!(node = btree_search_data(files, &temp, &compare_files)))
     {
-		ft_putstr("2\n");
 		btree_insert_avl(&files, &temp, sizeof(t_file), &compare_files);
-		ft_putstr("3\n");
 		node = btree_search_data(files, &temp, &compare_files);
     }
   n = BUFF_SIZE;

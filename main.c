@@ -6,7 +6,7 @@
 /*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/26 20:23:38 by eneto             #+#    #+#             */
-/*   Updated: 2018/04/26 23:00:07 by eneto            ###   ########.fr       */
+/*   Updated: 2018/04/26 23:20:36 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,12 @@ int main()
   ft_putchar('\n');*/
   
   ft_putstr("--------------------------------------\n");
+  ft_putnbr(fd1);
+  ft_putnbr(fd2);
+  ft_putnbr(fd3);
+  ft_putnbr(fd4);
   get_next_line(-1, line);
+  get_next_line(-1, line);
+  
   return (0);
 }
