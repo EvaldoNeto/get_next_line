@@ -115,7 +115,7 @@ static int compare_files(void *data1, void *data2)
   return (0);
 }
 
-static void print(void *data)
+static void print_fd(void *data)
 {
   t_file x;
 
@@ -123,11 +123,24 @@ static void print(void *data)
   ft_putnbr(x.fd);
 }
 
-int mopa(const int fd, char **line)
+static void print_buffer(void *data)
 {
-  static char *mozo = NULL;
+  t_file x;
+
+  x = *(t_file *)data;
+  ft_putstr(x.buffer);
+}
+
+/*int mopa(const int fd, char **line)
+{
+  static t_btree *files = NULL;
+  t_file temp;
   int n;
 
+  temp.fd = fd;
+  temp.buffer = NULL;
+  if (!files)
+    btree_insert_avl()
   n = BUFF_SIZE;
   if (!mozo)
     if (!(mozo = (char *)ft_memalloc(sizeof(char *) * (BUFF_SIZE + 1))))
@@ -143,7 +156,7 @@ int mopa(const int fd, char **line)
   else
       with_newline(mozo, line);   
   return (1);
-}
+  }*/
 
 int func2(void *data1, void *data2)
 {
@@ -181,7 +194,9 @@ int main()
   file4->fd = 40;
   file5->fd = 50;
   file6->fd = 25;
-
+  
+  file1->buffer = (char *)malloc(sizeof(char) * 10);
+  ft_memmove(file1->buffer, "CATIORRO", sizeof(char) * 10);  
   t_btree *tree;
 
   tree = NULL;
@@ -191,7 +206,33 @@ int main()
   btree_insert_avl(&tree, file4, sizeof(t_file), &compare_files);
   btree_insert_avl(&tree, file5, sizeof(t_file), &compare_files);
   btree_insert_avl(&tree, file6, sizeof(t_file), &compare_files);
-  btree_print(tree, 0, &print);
+  btree_print(tree, 0, &print_fd);
+
+
+  if (file1->buffer == NULL)
+    ft_putstr("NULL\n");
+  //ft_putstr(file1->buffer);
+  ft_putstr("\n");
+  t_file test;
+  t_btree *node;
+  test.fd = 10;
+  if ((node = btree_search_data(tree, &test, &compare_files)))
+    {
+      ft_putstr("ACHOU\n");
+      print_buffer(node->data);
+      ft_putstr("\n");
+      ft_memmove(((t_file *)(node->data))->buffer, "CAPIROTO", sizeof(char) * 10);  
+    }
+  else
+    ft_putstr("SQN\n");
+  if ((node = btree_search_data(tree, &test, &compare_files)))
+    {
+      ft_putstr("ACHOU\n");
+      print_buffer(node->data);
+      ft_putstr("\n");
+    }
+  else
+    ft_putstr("SQN\n");
   /*char **line;
   int fd;
   int i;
