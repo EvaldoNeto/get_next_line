@@ -11,18 +11,18 @@ static void print_spaces(int n)
     }
 }
 
-void btree_print(t_btree *root, int n)
+void btree_print(t_btree *root, int n, void (*print)(void *))
 {
   static int spaces = 10;
   
   if (root)
     {
       n += spaces;
-      btree_print(root->right, n);
+      btree_print(root->right, n, print);
       ft_putstr("\n");
       print_spaces(n - spaces);
-      ft_putstr(ft_itoa(*(int *)root->data));
+      (*print)(root->data);
       ft_putstr("\n");
-      btree_print(root->left, n);
+      btree_print(root->left, n, print);
     }
 }

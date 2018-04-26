@@ -17,7 +17,7 @@ t_btree *btree_insert_avl(t_btree **ptr, void * data, size_t data_size, int (*cm
   int balance;
 
   if (!(*ptr))
-    return (btree_create_node(data, data_size));
+    return (*ptr = btree_create_node(data, data_size));
   if ((*cmpf)(data,(*ptr)->data) < 0)
     (*ptr)->left = btree_insert_avl(&((*ptr)->left), data, data_size, cmpf);
   else if((*cmpf)(data, (*ptr)->data) > 0)

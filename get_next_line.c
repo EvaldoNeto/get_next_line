@@ -101,9 +101,48 @@ int get_next_line(const int fd, char **line)
   return (1);
 }
 
-void func1(void *s)
+static int compare_files(void *data1, void *data2)
 {
-  ft_putstr((char *)s);
+  t_file x;
+  t_file y;
+
+  x = *(t_file *)data1;
+  y = *(t_file *)data2;
+  if (x.fd < y.fd)
+    return (-1);
+  else if(x.fd > y.fd)
+    return (1);
+  return (0);
+}
+
+static void print(void *data)
+{
+  t_file x;
+
+  x = *(t_file *)data;
+  ft_putnbr(x.fd);
+}
+
+int mopa(const int fd, char **line)
+{
+  static char *mozo = NULL;
+  int n;
+
+  n = BUFF_SIZE;
+  if (!mozo)
+    if (!(mozo = (char *)ft_memalloc(sizeof(char *) * (BUFF_SIZE + 1))))
+      return (-1);
+  if (!(*mozo))
+    if(!(n = read(fd, mozo, BUFF_SIZE)))
+      return (0);
+  if (!check_newline(mozo))
+    {
+      if (!no_newline(fd, mozo, line, n))
+	return (0);
+    }
+  else
+      with_newline(mozo, line);   
+  return (1);
 }
 
 int func2(void *data1, void *data2)
@@ -123,6 +162,36 @@ int func2(void *data1, void *data2)
   
 int main()
 {
+  t_file *file1;
+  t_file *file2;
+  t_file *file3;
+  t_file *file4;
+  t_file *file5;
+  t_file *file6;
+  
+  file1 = (t_file *)malloc(sizeof(t_file));
+  file2 = (t_file *)malloc(sizeof(t_file));
+  file3 = (t_file *)malloc(sizeof(t_file));
+  file4 = (t_file *)malloc(sizeof(t_file));
+  file5 = (t_file *)malloc(sizeof(t_file));
+  file6 = (t_file *)malloc(sizeof(t_file));
+  file1->fd = 10;
+  file2->fd = 20;
+  file3->fd = 30;
+  file4->fd = 40;
+  file5->fd = 50;
+  file6->fd = 25;
+
+  t_btree *tree;
+
+  tree = NULL;
+  btree_insert_avl(&tree, file1, sizeof(t_file), &compare_files);
+  btree_insert_avl(&tree, file2, sizeof(t_file), &compare_files);
+  btree_insert_avl(&tree, file3, sizeof(t_file), &compare_files);
+  btree_insert_avl(&tree, file4, sizeof(t_file), &compare_files);
+  btree_insert_avl(&tree, file5, sizeof(t_file), &compare_files);
+  btree_insert_avl(&tree, file6, sizeof(t_file), &compare_files);
+  btree_print(tree, 0, &print);
   /*char **line;
   int fd;
   int i;
@@ -134,7 +203,7 @@ int main()
   ft_putnbr(BUFF_SIZE);
   ft_putchar('\n');
   fd = open("tests/in_the_name", O_RDONLY);
-  while (get_next_line(fd, line))
+  while (mopa(fd, line))
     {
       ft_putnbr(ft_strlen(*line));
       ft_putstr(":\t");
@@ -200,10 +269,10 @@ int main()
   ft_putstr("\n");
   btree_print(tree, 0);*/
 
-  t_btree *tree;
+   /* t_btree *tree;
   int n;
 
-  /*n = 30;
+  n = 30;
   tree = btree_create_node(&n, sizeof(int));
   n = 5;
   btree_insert_data(tree, &n, sizeof(int), &func2);
@@ -219,41 +288,28 @@ int main()
   btree_print(tree, 0);
   ft_putstr("\n");
   tree = btree_left_rotate(tree);
-  btree_print(tree, 0);*/
+  btree_print(tree, 0);
   tree = NULL;
   n = 10;
-  //tree = btree_create_node(&n, sizeof(int));
-  tree = btree_insert_avl(&tree, &n, sizeof(int), &func2);
-  btree_print(tree, 0);
-  ft_putstr("------------------------------\n");
+  btree_insert_avl(&tree, &n, sizeof(int), &func2);
   n = 20;
   btree_insert_avl(&tree, &n, sizeof(int), &func2);
-  btree_print(tree, 0);
-  ft_putstr("------------------------------\n");
   n = 30;
   btree_insert_avl(&tree, &n, sizeof(int), &func2);
-  btree_print(tree, 0);
-  ft_putstr("------------------------------\n");
   n = 40;
   btree_insert_avl(&tree, &n, sizeof(int), &func2);
-  btree_print(tree, 0);
-  ft_putstr("------------------------------\n");
   n = 50;
   btree_insert_avl(&tree, &n, sizeof(int), &func2);
-  btree_print(tree, 0);
-  ft_putstr("------------------------------\n");
   n = 25;
   btree_insert_avl(&tree, &n, sizeof(int), &func2);
   btree_print(tree, 0);
   ft_putstr("------------------------------\n");
-  /*tree = btree_left_rotate(tree);
-  btree_print(tree, 0);
-  tree = btree_left_rotate(tree);*/
-  //  btree_balance_avl(&tree, &func2);
-  //btree_print(tree, 0);
-  //btree_insert_avl(tree, &func2);
-  //ft_putnbr(*(int *)tree->right->data);
-  ft_putstr("\n");
+  n = 50;
+  if (btree_search_data(tree, &n, &func2))
+    ft_putstr("\nACHOU!\n");
+  else
+    ft_putstr("\nSQN!\n");
+    ft_putstr("\n");*/
 
   return (0);
 }

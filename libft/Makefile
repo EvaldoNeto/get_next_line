@@ -89,7 +89,8 @@ SRCS =		ft_atoi.c	\
 		btree_insert_data.c	\
 		btree_right_rotate.c	\
 		btree_left_rotate.c	\
-		btree_insert_avl.c	
+		btree_insert_avl.c	\
+		btree_search_data.c
 
 OBJ = $(SRCS:.c=.o)
 
