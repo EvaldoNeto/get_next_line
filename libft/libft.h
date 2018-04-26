@@ -104,6 +104,6 @@ void				btree_nodes_in_level(t_btree **dest, t_btree *root, int level);
 t_btree				*btree_insert_data(t_btree *root, void *data, size_t data_size, int (*cmpf)(void *, void *));
 t_btree				*btree_right_rotate(t_btree *node);
 t_btree				*btree_left_rotate(t_btree *node);
-t_btree			        *btree_insert_avl(t_btree *root, void * data, size_t data_size, int (*cmpf)(void *, void *));
+t_btree			        *btree_insert_avl(t_btree **root, void * data, size_t data_size, int (*cmpf)(void *, void *));
 
 #endif

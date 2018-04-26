@@ -1,33 +1,37 @@
 #include "libft.h"
 
-t_btree *btree_insert_avl(t_btree *root, void * data, size_t data_size, int (*cmpf)(void *, void *))
+static t_btree *rotate_left_right(t_btree **ptr)
+{
+  (*ptr)->left = btree_left_rotate((*ptr)->left);    
+  return (*ptr = btree_right_rotate((*ptr)));
+}
+
+static t_btree *rotate_right_left(t_btree **ptr)
+{
+  (*ptr)->right = btree_right_rotate((*ptr)->right);
+  return (*ptr = btree_left_rotate((*ptr)));
+}
+
+t_btree *btree_insert_avl(t_btree **ptr, void * data, size_t data_size, int (*cmpf)(void *, void *))
 {
   int balance;
 
-  if (!root)
+  if (!(*ptr))
     return (btree_create_node(data, data_size));
-  if ((*cmpf)(data,root->data) < 0)
-    root->left = btree_insert_avl(root->left, data, data_size, cmpf);
-  else if((*cmpf)(data, root->data) > 0)
-    root->right = btree_insert_avl(root->right, data, data_size, cmpf);
+  if ((*cmpf)(data,(*ptr)->data) < 0)
+    (*ptr)->left = btree_insert_avl(&((*ptr)->left), data, data_size, cmpf);
+  else if((*cmpf)(data, (*ptr)->data) > 0)
+    (*ptr)->right = btree_insert_avl(&((*ptr)->right), data, data_size, cmpf);
   else
-    return (root);
-  balance = btree_height(root->left) - btree_height(root->right);
-  if (balance > 1 && (*cmpf)(data, root->left->data))
-    return (btree_right_rotate(root));
-  if (balance < -1 && (*cmpf)(data, root->right->data) > 0)
-    return (btree_left_rotate(root));
-  if (balance > 1 && (*cmpf)(data, root->left->data) > 0)
-    {
-      root->left = btree_left_rotate(root->left);
-      return (btree_right_rotate(root));
-    }
-  if (balance < 1 && (*cmpf)(data, root->right->data) < 0)
-    {
-      root->right = btree_right_rotate(root->right);
-
-      return (btree_left_rotate(root));
-    }
-  return (root);
+    return (*ptr);
+  balance = btree_height((*ptr)->left) - btree_height((*ptr)->right);
+  if (balance > 1 && (*cmpf)(data, (*ptr)->left->data))
+      return (*ptr = btree_right_rotate((*ptr)));
+  if (balance < -1 && (*cmpf)(data, (*ptr)->right->data) > 0)
+      return (*ptr = btree_left_rotate((*ptr)));
+  if (balance > 1 && (*cmpf)(data, (*ptr)->left->data) > 0)
+    return (rotate_left_right(ptr));
+  if (balance < 1 && (*cmpf)(data, (*ptr)->right->data) < 0)
+    return (rotate_right_left(ptr));
+  return ((*ptr));
 }
-
