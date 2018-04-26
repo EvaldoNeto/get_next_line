@@ -122,41 +122,51 @@ static void print_fd(void *data)
   x = *(t_file *)data;
   ft_putnbr(x.fd);
 }
-
+/*
 static void print_buffer(void *data)
 {
   t_file x;
 
   x = *(t_file *)data;
   ft_putstr(x.buffer);
-}
+  }*/
 
-/*int mopa(const int fd, char **line)
+int mopa(const int fd, char **line)
 {
   static t_btree *files = NULL;
   t_file temp;
   int n;
+  t_btree *node;
 
+  if (fd == -42)
+    {
+      btree_print(files, 0, &print_fd);
+      return (0);
+    }
+  node = NULL;
   temp.fd = fd;
   temp.buffer = NULL;
-  if (!files)
-    btree_insert_avl()
-  n = BUFF_SIZE;
-  if (!mozo)
-    if (!(mozo = (char *)ft_memalloc(sizeof(char *) * (BUFF_SIZE + 1))))
-      return (-1);
-  if (!(*mozo))
-    if(!(n = read(fd, mozo, BUFF_SIZE)))
-      return (0);
-  if (!check_newline(mozo))
+  if (!(node = btree_search_data(files, &temp, &compare_files)))
     {
-      if (!no_newline(fd, mozo, line, n))
+      btree_insert_avl(&files, &temp, sizeof(t_file), &compare_files);
+      node = btree_search_data(files, &temp, &compare_files);
+    }
+  n = BUFF_SIZE;
+  if (!((t_file *)(node->data))->buffer)
+    if (!(((t_file *)(node->data))->buffer = (char *)ft_memalloc(sizeof(char *) * (BUFF_SIZE + 1))))
+      return (-1);
+  if (!(*((t_file *)(node->data))->buffer))
+    if(!(n = read(fd, ((t_file *)(node->data))->buffer, BUFF_SIZE)))
+      return (0);
+  if (!check_newline(((t_file *)(node->data))->buffer))
+    {
+      if (!no_newline(fd, ((t_file *)(node->data))->buffer, line, n))
 	return (0);
     }
   else
-      with_newline(mozo, line);   
+      with_newline(((t_file *)(node->data))->buffer, line);   
   return (1);
-  }*/
+}
 
 int func2(void *data1, void *data2)
 {
@@ -175,7 +185,7 @@ int func2(void *data1, void *data2)
   
 int main()
 {
-  t_file *file1;
+  /*t_file *file1;
   t_file *file2;
   t_file *file3;
   t_file *file4;
@@ -232,19 +242,52 @@ int main()
       ft_putstr("\n");
     }
   else
-    ft_putstr("SQN\n");
-  /*char **line;
-  int fd;
-  int i;
+    ft_putstr("SQN\n");*/
+  char **line;
+  int fd1;
+  int fd2;
+  int fd3;
+  int fd4;
+  /*  int i;
   int n;
 
   n = 0;
-  i = 0;
+  i = 0;*/
   line = (char **)ft_memalloc(sizeof(char *));
   ft_putnbr(BUFF_SIZE);
   ft_putchar('\n');
-  fd = open("tests/in_the_name", O_RDONLY);
-  while (mopa(fd, line))
+  fd1 = open("tests/in_the_name", O_RDONLY);
+  fd2 = open("tests/draft_browns", O_RDONLY);
+  fd3 = open("tests/game_of_thrones", O_RDONLY);
+  fd4 = open("tests/inorder_traversal", O_RDONLY);
+
+  mopa(fd1, line);
+  ft_putstr(*line);
+  ft_putstr("\n\n");
+  mopa(fd2, line);
+  ft_putstr(*line);
+  ft_putstr("\n\n");
+  mopa(fd1, line);
+  ft_putstr(*line);
+  ft_putstr("\n\n");
+  mopa(fd3, line);
+  ft_putstr(*line);
+  ft_putstr("\n\n");
+  mopa(fd4, line);
+  ft_putstr(*line);
+  ft_putstr("\n\n");
+  mopa(fd1, line);
+  ft_putstr(*line);
+  ft_putstr("\n\n");
+  mopa(fd1, line);
+  ft_putstr(*line);
+  ft_putstr("\n\n");
+  mopa(fd3, line);
+  ft_putstr(*line);
+  ft_putstr("\n\n");
+
+  mopa(-42, line);
+  /*while (mopa(fd, line))
     {
       ft_putnbr(ft_strlen(*line));
       ft_putstr(":\t");
@@ -252,8 +295,8 @@ int main()
       ft_putchar('\n');
       i++;
       n+= ft_strlen(*line);
-    }
-  ft_putnbr(ft_strlen(*line));
+      }*/
+  /*ft_putnbr(ft_strlen(*line));
   ft_putstr(":\t");
   ft_putstr(*line);
   ft_putchar('\n');*/
