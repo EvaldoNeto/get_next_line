@@ -1,6 +1,0 @@
-#include "libft.h"
-
-int btree_search_data(t_btree *root, void *data, int (*cmpf)(void *, void *))
-{
-
-}

@@ -194,7 +194,7 @@ int main()
   ft_putstr(*line);
   ft_putstr("\n\n");
 
-  get_next_line(-42, line);
+  //get_next_line(-42, line);
   while (get_next_line(fd1, line))
     {
       ft_putnbr(ft_strlen(*line));
