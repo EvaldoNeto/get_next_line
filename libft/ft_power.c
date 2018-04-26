@@ -1,14 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_power.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/26 20:10:02 by eneto             #+#    #+#             */
+/*   Updated: 2018/04/26 20:10:30 by eneto            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-
-unsigned int ft_power(int base, int n)
+unsigned int	ft_power(int base, int n)
 {
-  unsigned int i;
+	unsigned int i;
 
-  i = 1;
-  while (n > 0)
-    {
-      i = i * base;
-      n--;
-    }
-  return (i);
+	i = 1;
+	while (n > 0)
+	{
+		i = i * base;
+		n--;
+	}
+	return (i);
 }
