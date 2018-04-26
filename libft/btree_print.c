@@ -21,7 +21,7 @@ void btree_print(t_btree *root, int n)
       btree_print(root->right, n);
       ft_putstr("\n");
       print_spaces(n - spaces);
-      ft_putstr(root->data);
+      ft_putstr(ft_itoa(*(int *)root->data));
       ft_putstr("\n");
       btree_print(root->left, n);
     }

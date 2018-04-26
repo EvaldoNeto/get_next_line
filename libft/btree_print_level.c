@@ -1,19 +1,5 @@
 #include "libft.h"
 
-/*static void print_spaces(int n)
-{
-  int i;
-
-  i = ft_power(2, n);
-  if (n == 0)
-    return ;
-  while(i > 0)
-    {
-      ft_putstr(" ");
-      i--;
-    }
-    }*/
-
 void btree_print_level(t_btree *root, int level)
 {
   if (root)

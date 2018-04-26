@@ -1,6 +1,6 @@
 #include "libft.h"
 
-void btree_apply_postorder(t_btree *root, void (*applyf)(char *))
+void btree_apply_postorder(t_btree *root, void (*applyf)(void *))
 {
   if (root)
     {

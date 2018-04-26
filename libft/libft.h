@@ -92,7 +92,7 @@ void				ft_lstadd(t_list **alst, t_list *new);
 void				ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 t_btree				*btree_create_node(void const *data, size_t data_size);
-void				btree_apply_postorder(t_btree *root, void (*applyf)(char *));
+void				btree_apply_postorder(t_btree *root, void (*applyf)(void *));
 int				btree_node_level(t_btree *root, t_btree *node, int i);
 int				ft_max(int a, int b);
 int				btree_height(t_btree *root);
@@ -101,4 +101,9 @@ void				btree_print_level(t_btree *root, int level);
 int				ft_power(int base, int n);
 int				btree_nodes_per_level(t_btree *root, int level);
 void				btree_nodes_in_level(t_btree **dest, t_btree *root, int level);
+t_btree				*btree_insert_data(t_btree *root, void *data, size_t data_size, int (*cmpf)(void *, void *));
+t_btree				*btree_right_rotate(t_btree *node);
+t_btree				*btree_left_rotate(t_btree *node);
+t_btree			        *btree_insert_avl(t_btree *root, void * data, size_t data_size, int (*cmpf)(void *, void *));
+
 #endif

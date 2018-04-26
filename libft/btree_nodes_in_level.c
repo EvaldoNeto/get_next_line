@@ -14,9 +14,4 @@ void btree_nodes_in_level(t_btree **dest, t_btree *root, int level)
       btree_nodes_in_level(dest, root->left, level - 1);
       btree_nodes_in_level(dest, root->right, level - 1);
     }
-  /*  else
-    {
-      *(dest + i) = btree_create_node("null", 5);
-       i++;
-       }*/
 }

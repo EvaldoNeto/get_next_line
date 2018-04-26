@@ -83,7 +83,7 @@ int get_next_line(const int fd, char **line)
 {
   static char *buff = NULL;
   int n;
-
+  
   n = BUFF_SIZE;
   if (!buff)
     if (!(buff = (char *)ft_memalloc(sizeof(char *) * (BUFF_SIZE + 1))))
@@ -101,6 +101,26 @@ int get_next_line(const int fd, char **line)
   return (1);
 }
 
+void func1(void *s)
+{
+  ft_putstr((char *)s);
+}
+
+int func2(void *data1, void *data2)
+{
+  if (!data1 && data2)
+    return (-1);
+  if (data2 && !data1)
+    return (1);
+  if (!data1 && !data2)
+    return (0);
+  if (*(int *)data1 < *(int *)data2)
+    return (-1);
+  else if (*(int *)data1 > *(int *)data2)
+    return (1);
+  return (0);
+}
+  
 int main()
 {
   /*char **line;
@@ -128,7 +148,7 @@ int main()
   ft_putstr(*line);
   ft_putchar('\n');*/
 
-  t_btree *tree;
+  /*t_btree *tree;
   int n;
   
   tree = btree_create_node("1", sizeof(char) + 1);
@@ -153,7 +173,7 @@ int main()
       ft_putnbr(n);
     }
   ft_putchar('\n');
-  btree_apply_postorder(tree, &ft_putstr);
+  btree_apply_postorder(tree, &func1);
   ft_putchar('\n');
   n = btree_height(tree);
   btree_print_level(tree, 2);
@@ -178,6 +198,62 @@ int main()
       i++;
     }
   ft_putstr("\n");
+  btree_print(tree, 0);*/
+
+  t_btree *tree;
+  int n;
+
+  /*n = 30;
+  tree = btree_create_node(&n, sizeof(int));
+  n = 5;
+  btree_insert_data(tree, &n, sizeof(int), &func2);
+  n = 35;
+  btree_insert_data(tree, &n, sizeof(int), &func2);
+  n = 32;
+  btree_insert_data(tree, &n, sizeof(int), &func2);
+  n = 40;
+  btree_insert_data(tree, &n, sizeof(int), &func2);
+  n = 45;
+  btree_insert_data(tree, &n, sizeof(int), &func2);
+
   btree_print(tree, 0);
+  ft_putstr("\n");
+  tree = btree_left_rotate(tree);
+  btree_print(tree, 0);*/
+  tree = NULL;
+  n = 10;
+  //tree = btree_create_node(&n, sizeof(int));
+  tree = btree_insert_avl(tree, &n, sizeof(int), &func2);
+  btree_print(tree, 0);
+  ft_putstr("------------------------------\n");
+  n = 20;
+  tree = btree_insert_avl(tree, &n, sizeof(int), &func2);
+  btree_print(tree, 0);
+  ft_putstr("------------------------------\n");
+  n = 30;
+  tree = btree_insert_avl(tree, &n, sizeof(int), &func2);
+  btree_print(tree, 0);
+  ft_putstr("------------------------------\n");
+  n = 40;
+  tree = btree_insert_avl(tree, &n, sizeof(int), &func2);
+  btree_print(tree, 0);
+  ft_putstr("------------------------------\n");
+  n = 50;
+  tree = btree_insert_avl(tree, &n, sizeof(int), &func2);
+  btree_print(tree, 0);
+  ft_putstr("------------------------------\n");
+  n = 25;
+  tree = btree_insert_avl(tree, &n, sizeof(int), &func2);
+  btree_print(tree, 0);
+  ft_putstr("------------------------------\n");
+  /*tree = btree_left_rotate(tree);
+  btree_print(tree, 0);
+  tree = btree_left_rotate(tree);*/
+  //  btree_balance_avl(&tree, &func2);
+  //btree_print(tree, 0);
+  //btree_insert_avl(tree, &func2);
+  //ft_putnbr(*(int *)tree->right->data);
+  ft_putstr("\n");
+
   return (0);
 }
