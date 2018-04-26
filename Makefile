@@ -6,34 +6,55 @@
 #    By: eneto <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/19 19:05:57 by eneto             #+#    #+#              #
-#    Updated: 2018/04/19 19:29:55 by eneto            ###   ########.fr        #
+#    Updated: 2018/04/26 22:06:51 by eneto            ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
-NAME = get_next_line
-
-LIB = ./libft/libft.a
-
 CC = gcc
 
-FLAGS = -Wall -Wextra -Werror 
+FLAGS = -Wall -Wextra -Werror
 
-SRCS = 	get_next_line.c
+NAME = get_next_line
 
-OBJS = $(SRC:.c=.o)
+FILES =		get_next_line.c	\
+			main.c
 
-all: $(NAME)
+F_DIR = .
+SRCS = $(addprefix $(F_DIR)/, $(FILES))
 
-$(NAME):
-	$(MAKE) -C ./libft
-	$(CC) $(FLAGS) $(SRCS) $(LIB) -o $(NAME)
+O_DIR = objs
+OBJS = $(addprefix $(O_DIR)/, $(FILES:.c=.o))
+
+HEADER = get_next_line.h
+H_DIR = .
+INC = $(addprefix $(H_DIR)/, $(HEADER))
+INCLUDE = -I $(L_DIR) -I $(H_DIR)
+
+L_DIR = libft
+LIB = libft/libft.a
+LIBLINK = -L ./$(L_DIR) -lft
+
+all: libft $(NAME)
+
+$(NAME):	$(OBJS) $(LIBFT)
+			$(CC) $(FLAGS) -o $@ $(OBJS) $(LIBLINK)
+
+$(O_DIR)/%.o:	$(F_DIR)/%.c $(INC)
+				@mkdir -p $(O_DIR)
+				@$(CC) $(FLAGS) $(INCLUDE) -c -o $@ $<
+				@echo "Creation de "$@" OK"
+
+libft:
+		@make -C $(L_DIR)
 
 clean:
-	@/bin/rm -f $(OBJS)
-	$(MAKE) -C ./libft clean
+		rm -f $(OBJ)
+		$(MAKE) -C ./libft clean
 
-fclean: clean
-	@/bin/rm -f $(NAME) $(LIB)
-	$(MAKE) -C ./libft clean
+fclean:	clean
+		rm -f $(NAME)
+		$(MAKE) -C ./libft fclean
 
-re: fclean all
+re:	fclean all
+
+.PHONY: all clean fclean re libft

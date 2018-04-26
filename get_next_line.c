@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/04/26 20:19:50 by eneto             #+#    #+#             */
+/*   Updated: 2018/04/26 22:51:43 by eneto            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./libft/libft.h"
 #include "get_next_line.h"
 #include <unistd.h>
@@ -44,22 +56,22 @@ int no_newline(const int fd, char *buff, char **line, int n)
       return (-1);
     }
   while (!check_newline(buff))
-    {
+  {
       if (n != 0)
 	*line = ft_strjoin(*line, ft_strsub(buff, 0, n));
       if (n < BUFF_SIZE)
-	{
+	  {
 	  free(buff);
 	  buff = NULL;
 	  return (0);
-	}
+	  }
       if((n = read(fd, buff, BUFF_SIZE)) == - 1)
-	{
+	  {
 	  ft_putstr("SEGUNDO IF\n");
 	  *line = NULL;
 	  return (-1);
-	}
-    }
+	  }
+  }
   i = leading_newline(buff);
   *line = ft_strjoin(*line, ft_strsub(buff, 0, i));
   if (!check_newline(buff))
@@ -92,31 +104,24 @@ static int compare_files(void *data1, void *data2)
   t_file x;
   t_file y;
 
+  ft_putstr("c1\n");
   x = *(t_file *)data1;
+  ft_putstr("c2\n");
   y = *(t_file *)data2;
+  ft_putstr("c3\n");
   if (x.fd < y.fd)
-    return (-1);
+  {
+	  ft_putstr("c4\n");
+	  return (-1);
+  }
   else if(x.fd > y.fd)
-    return (1);
+  {
+	  ft_putstr("c4\n");
+	  return (1);
+  }
+  ft_putstr("c4\n");
   return (0);
 }
-
-
-/*static void print_fd(void *data)
-{
-  t_file x;
-
-  x = *(t_file *)data;
-  ft_putnbr(x.fd);
-}
-
-static void print_buffer(void *data)
-{
-  t_file x;
-
-  x = *(t_file *)data;
-  ft_putstr(x.buffer);
-  }*/
 
 int get_next_line(const int fd, char **line)
 {
@@ -127,18 +132,18 @@ int get_next_line(const int fd, char **line)
 
   temp.fd = fd;
   temp.buffer = NULL;
+  ft_putstr("1\n");
   if (!(node = btree_search_data(files, &temp, &compare_files)))
     {
-      btree_insert_avl(&files, &temp, sizeof(t_file), &compare_files);
-      node = btree_search_data(files, &temp, &compare_files);
+		ft_putstr("2\n");
+		btree_insert_avl(&files, &temp, sizeof(t_file), &compare_files);
+		ft_putstr("3\n");
+		node = btree_search_data(files, &temp, &compare_files);
     }
   n = BUFF_SIZE;
   if (!((t_file *)(node->data))->buffer)
     if (!(((t_file *)(node->data))->buffer = (char *)ft_memalloc(sizeof(char *) * (BUFF_SIZE + 1))))
       return (-1);
-  /*if (!(*((t_file *)(node->data))->buffer))
-    if((n = read(fd, ((t_file *)(node->data))->buffer, BUFF_SIZE)) == -1)
-    return (-1);*/
   if (!check_newline(((t_file *)(node->data))->buffer))
     {
       if (!no_newline(fd, ((t_file *)(node->data))->buffer, line, n))
@@ -147,87 +152,4 @@ int get_next_line(const int fd, char **line)
   else
     with_newline(((t_file *)(node->data))->buffer, line);   
   return (1);
-}
-  
-int main()
-{
-  char **line;
-  int fd1;
-  int fd2;
-  int fd3;
-  int fd4;
-  int i;
-  int n;
-
-  n = 0;
-  i = 0;
-  line = (char **)ft_memalloc(sizeof(char *));
-  ft_putnbr(BUFF_SIZE);
-  ft_putchar('\n');
-  fd1 = open("tests/in_the_name", O_RDONLY);
-  fd2 = open("tests/draft_browns", O_RDONLY);
-  fd3 = open("tests/game_of_thrones", O_RDONLY);
-  fd4 = open("tests/inorder_traversal", O_RDONLY);
-
-  get_next_line(fd1, line);
-  ft_putstr(*line);
-  ft_putstr("\n\n");
-  get_next_line(fd2, line);
-  ft_putstr(*line);
-  ft_putstr("\n\n");
-  get_next_line(fd1, line);
-  ft_putstr(*line);
-  ft_putstr("\n\n");
-  get_next_line(fd3, line);
-  ft_putstr(*line);
-  ft_putstr("\n\n");
-  get_next_line(fd4, line);
-  ft_putstr(*line);
-  ft_putstr("\n\n");
-  get_next_line(fd1, line);
-  ft_putstr(*line);
-  ft_putstr("\n\n");
-  get_next_line(fd1, line);
-  ft_putstr(*line);
-  ft_putstr("\n\n");
-  get_next_line(fd3, line);
-  ft_putstr(*line);
-  ft_putstr("\n\n");
-
-  //get_next_line(-42, line);
-  while (get_next_line(fd1, line))
-    {
-      ft_putnbr(ft_strlen(*line));
-      ft_putstr(":\t");
-      ft_putstr(*line);
-      ft_putchar('\n');
-      i++;
-      n+= ft_strlen(*line);
-    }
-  ft_putnbr(ft_strlen(*line));
-  ft_putstr(":\t");
-  ft_putstr(*line);
-  ft_putchar('\n');
-
-  while (get_next_line(fd2, line))
-    {
-      ft_putnbr(ft_strlen(*line));
-      ft_putstr(":\t");
-      ft_putstr(*line);
-      ft_putchar('\n');
-      i++;
-      n+= ft_strlen(*line);
-    }
-  ft_putnbr(ft_strlen(*line));
-  ft_putstr(":\t");
-  ft_putstr(*line);
-  ft_putchar('\n');
-
-  char temp[10];
-  int k;
-
-  k = read(-42, temp, 10);
-  ft_putnbr(k);
-  ft_putchar('\n');
-  return (0);
 }
