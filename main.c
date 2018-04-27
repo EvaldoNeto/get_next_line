@@ -87,13 +87,15 @@ void test_del_btree()
       btree_insert_avl(&root, &n[i], sizeof(int), &cmpf);
       i++;
     }
-  i = 0;
+  i = 10;
   while (i < 9)
     {
-      btree_deletenode_avl(&root, &n[i], &cmpf, &dealloc);
+      btree_deletenode_avl(&root, &n[i], &cmpf, &free);
       i++;
     }
-  //btree_deletenode_avl(&root, &n[2], &cmpf, &dealloc);
+  btree_deletenode_avl(&root, &n[2], &cmpf, &free);
+  btree_deletenode_avl(&root, &n[5], &cmpf, &free);
+  btree_deletenode_avl(&root, &n[0], &cmpf, &free);
   btree_print(root, 0, &print_data);
 }
 

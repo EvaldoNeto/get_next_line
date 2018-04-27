@@ -35,13 +35,16 @@ t_btree *btree_deletenode_avl(t_btree **root, void *data, int (*cmpf)(void *, vo
 	  temp = (((*root)->left) ? ((*root)->left) : ((*root)->right));
 	  if (!temp)
 	    {
-	      temp = *root;
+	      (*del)((*root)->data);
+	      free(*root);	 
 	      *root = NULL;
 	    }
 	  else
-	    ft_memmove(*root, temp, sizeof(t_btree));
-	  free(temp->data);
-	  del(temp);
+	    {
+	      (*del)((*root)->data);
+	      ft_memmove(*root, temp, sizeof(t_btree));
+	      free(temp);
+	    }
 	}
       else
 	{
