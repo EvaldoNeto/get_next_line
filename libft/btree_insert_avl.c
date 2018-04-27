@@ -38,7 +38,7 @@ t_btree			*btree_insert_avl(t_btree **ptr, void *data, size_t data_size,
 	else
 		return (*ptr);
 	balance = btree_height((*ptr)->left) - btree_height((*ptr)->right);
-	if (balance > 1 && (*cmpf)(data, (*ptr)->left->data))
+	if (balance > 1 && (*cmpf)(data, (*ptr)->left->data) < 0)
 		return (*ptr = btree_right_rotate((*ptr)));
 	if (balance < -1 && (*cmpf)(data, (*ptr)->right->data) > 0)
 		return (*ptr = btree_left_rotate((*ptr)));

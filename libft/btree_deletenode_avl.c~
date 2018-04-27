@@ -1,0 +1,22 @@
+#include "libft.h"
+
+static	t_btree	*rotate_left_right(t_btree **ptr)
+{
+	(*ptr)->left = btree_left_rotate((*ptr)->left);
+	return (*ptr = btree_right_rotate((*ptr)));
+}
+
+static	t_btree	*rotate_right_left(t_btree **ptr)
+{
+	(*ptr)->right = btree_right_rotate((*ptr)->right);
+	return (*ptr = btree_left_rotate((*ptr)));
+}
+
+t_btree *btree_deletenode_avl(t_btree **root, void *data, int (*cmpf)(void *, void *))
+{
+  int balance;
+
+  if (!(*root))
+    return (NULL);
+  if ((*cmpf)(data, root->data) < 0)
+}

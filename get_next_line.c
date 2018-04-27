@@ -16,63 +16,26 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
-int check_newline(char *str)
-{
-  int i;
-
-  i = 0;
-  while (str[i])
-    {
-      if (str[i] == '\n')
-	return (1);
-      i++;
-    }
-  return (0);
-}
-
-int leading_newline(char *str)
-{
-  int i;
-
-  i = 0;
-  while (str[i])
-    {
-      if (str[i] == '\n')
-	return (i);
-      i++;
-    }
-  return (-1);
-}
-
 int no_newline(const int fd, char *buff, char **line, int n)
 {
   int i;
 
+  i = 0;
   *line = ft_strdup(buff);
   if((n = read(fd, buff, BUFF_SIZE)) == -1)
-    {
-      *line = NULL;
       return (-1);
-    }
-  while (!check_newline(buff))
+  while (!ft_strchr(buff, '\n'))
   {
       if (n != 0)
-	*line = ft_strjoin(*line, ft_strsub(buff, 0, n));
-      if (n < BUFF_SIZE)
-	  {
-		  free(buff);
-		  buff = NULL;
-		  return (0);
-	  }
+	*line = ft_strjoin_free(*line, ft_strsub(buff, 0, n));
       if((n = read(fd, buff, BUFF_SIZE)) == - 1)
-	  {
-		  *line = NULL;
-		  return (-1);
-	  }
+	return (-1);
+      if (n < BUFF_SIZE)
+	return (0);
   }
-  i = leading_newline(buff);
-  *line = ft_strjoin(*line, ft_strsub(buff, 0, i));
-  if (!check_newline(buff))
+  i = ft_strlen(buff) - ft_strlen(ft_strchr(buff, '\n'));
+  *line = ft_strjoin_free(*line, ft_strsub(buff, 0, i));
+  if (!ft_strchr(buff, '\n'))
     {
       free(buff);
       buff = NULL;
@@ -86,9 +49,9 @@ void with_newline(char *buff, char **line)
 {
   int i;
 
-  i = leading_newline(buff);
+  i = ft_strlen(buff) - ft_strlen(ft_strchr(buff, '\n'));
   *line = ft_strsub(buff, 0, i);
-  if (!check_newline(buff))
+  if (!ft_strchr(buff, '\n'))
     {
       free(buff);
       buff = NULL;
@@ -111,7 +74,7 @@ static int compare_files(void *data1, void *data2)
   return (0);
 }
 
-static void print_fd(void *data1)
+void print_fd(void *data1)
 {
 	t_file *temp;
 
@@ -126,7 +89,6 @@ int get_next_line(const int fd, char **line)
   int n;
   t_btree *node;
 
-  btree_print(files, 0, &print_fd);
   temp.fd = fd;
   temp.buffer = NULL;
   if (!(node = btree_search_data(files, &temp, &compare_files)))
@@ -138,10 +100,16 @@ int get_next_line(const int fd, char **line)
   if (!((t_file *)(node->data))->buffer)
     if (!(((t_file *)(node->data))->buffer = (char *)ft_memalloc(sizeof(char *) * (BUFF_SIZE + 1))))
       return (-1);
-  if (!check_newline(((t_file *)(node->data))->buffer))
+  if (!ft_strchr(((t_file *)(node->data))->buffer, '\n'))
     {
-      if (!no_newline(fd, ((t_file *)(node->data))->buffer, line, n))
-	return (0);
+      if (!(n = no_newline(fd, ((t_file *)(node->data))->buffer, line, n)) || n == -1)
+	{
+	  free(((t_file *)(node->data))->buffer);
+	  ((t_file *)(node->data))->buffer = NULL;
+	  if (n == -1)
+	    free(*line);
+	  return (n);
+	}
     }
   else
     with_newline(((t_file *)(node->data))->buffer, line);   

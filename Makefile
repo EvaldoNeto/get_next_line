@@ -37,12 +37,12 @@ LIBLINK = -L ./$(L_DIR) -lft
 all: libft $(NAME)
 
 $(NAME):	$(OBJS) $(LIBFT)
-			$(CC) $(FLAGS) -o $@ $(OBJS) $(LIBLINK)
+		$(CC) $(FLAGS) -o $@ $(OBJS) $(LIBLINK)
 
 $(O_DIR)/%.o:	$(F_DIR)/%.c $(INC)
-				@mkdir -p $(O_DIR)
-				@$(CC) $(FLAGS) $(INCLUDE) -c -o $@ $<
-				@echo "Creation de "$@" OK"
+		@mkdir -p $(O_DIR)
+		@$(CC) $(FLAGS) $(INCLUDE) -c -o $@ $<
+		@echo "Creation de "$@" OK"
 
 libft:
 		@make -C $(L_DIR)
