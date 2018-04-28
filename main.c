@@ -76,41 +76,194 @@ void test_btree()
 
 void test_del_btree()
 {
-  int n[9] = {9, 5, 10, 0, 6, 11, -1, 1, 2};
+  int n[12] = {9, 5, 10, 0, 6, 11, -1, 1, 2, -5, -3, 8};
+  //int n[3] = {9, 5, 10};
   int i;
   t_btree *root;
 
   root = NULL;
   i = 0;
-  while (i < 9)
+  while (i < 12)
     {
       btree_insert_avl(&root, &n[i], sizeof(int), &cmpf);
       i++;
     }
-  i = 10;
+  i = 0;
   while (i < 9)
     {
       btree_deletenode_avl(&root, &n[i], &cmpf, &free);
       i++;
     }
-  btree_deletenode_avl(&root, &n[2], &cmpf, &free);
+  /*btree_deletenode_avl(&root, &n[2], &cmpf, &free);
   btree_deletenode_avl(&root, &n[5], &cmpf, &free);
-  btree_deletenode_avl(&root, &n[0], &cmpf, &free);
+  btree_deletenode_avl(&root, &n[0], &cmpf, &free);*/
   btree_print(root, 0, &print_data);
 }
 
-void test2()
+void test_1full_file()
+{
+  char **line;
+
+  int fd1;
+  line = (char **)ft_memalloc(sizeof(char*));
+  fd1 = open("tests/in_the_name", O_RDONLY);
+
+  while (get_next_line(fd1, line))
+    {
+      ft_putstr(*line);
+      free(*line);
+      ft_putchar('\n');
+    }
+  ft_putstr(*line);
+  free(*line);
+  ft_putchar('\n');
+}
+
+void test_1partial_file()
+{
+  char **line;
+  int fd1;
+  int i;
+  
+  line = (char **)ft_memalloc(sizeof(char*));
+  fd1 = open("tests/in_the_name", O_RDONLY);
+  i = 0;
+  while (get_next_line(fd1, line) && i < 10)
+    {
+      ft_putstr(*line);
+      free(*line);
+      ft_putchar('\n');
+      i++;
+    }
+  ft_putstr(*line);
+  free(*line);
+  ft_putchar('\n');
+}
+
+void test_no_file()
+{
+  int n;
+  char **line;
+  int fd;
+  
+  line = (char **)ft_memalloc(sizeof(char*));
+  *line = ft_strnew(sizeof(char) * 100);
+  printf("mopa: %s\n", *line);
+  fd = open("tests/in_the_name", O_RDONLY);
+  close(fd);
+  n = get_next_line(fd, line);
+  ft_putstr(*line);
+  n = get_next_line(4, line);
+  printf("no file return value: %d\nline: %s\n", n, *line);
+}
+
+void test_2full_files_samefd()
+{
+  char **line;
+  int fd1;
+  
+  line = (char **)ft_memalloc(sizeof(char*));
+  fd1 = open("tests/draft_browns", O_RDONLY);
+  printf("%d\n", fd1);
+  while (get_next_line(fd1, line))
+    {
+      ft_putstr(*line);
+      free(*line);
+      ft_putchar('\n');
+    }
+  ft_putstr(*line);
+  free(*line);
+  ft_putchar('\n');
+  close(fd1);
+  fd1 = open("tests/in_the_name", O_RDONLY);
+  while (get_next_line(fd1, line))
+    {
+      ft_putstr(*line);
+      free(*line);
+      ft_putchar('\n');
+    }
+  ft_putstr(*line);
+  free(*line);
+  ft_putchar('\n');
+  printf("%d\n", fd1);
+}
+
+void test_2full_files_diffsfd()
+{
+  char **line;
+  int fd1;
+  int fd2;
+  
+  line = (char **)ft_memalloc(sizeof(char*));
+  fd1 = open("tests/draft_browns", O_RDONLY);
+  printf("%d\n", fd1);
+  while (get_next_line(fd1, line))
+    {
+      ft_putstr(*line);
+      free(*line);
+      ft_putchar('\n');
+    }
+  ft_putstr(*line);
+  free(*line);
+  printf("%d\n", fd1);
+  ft_putchar('\n');
+  fd2 = open("tests/in_the_name", O_RDONLY);
+  while (get_next_line(fd2, line))
+    {
+      ft_putstr(*line);
+      free(*line);
+      ft_putchar('\n');
+    }
+  ft_putstr(*line);
+  free(*line);
+  ft_putchar('\n');
+  printf("%d\n", fd2);
+  free(line);
+  close(fd1);
+  close(fd2);
+}
+
+void test_del_tree()
+{
+  char **line;
+  int fd1;
+  int fd2;
+  
+  line = (char **)ft_memalloc(sizeof(char*));
+  fd1 = open("tests/draft_browns", O_RDONLY);
+  while (get_next_line(fd1, line))
+      free(*line);
+  free(*line);
+  printf("\nfile descriptor 1: %d\n", fd1);
+  ft_putchar('\n');
+  fd2 = open("tests/in_the_name", O_RDONLY);
+  while (get_next_line(fd2, line))
+      free(*line);
+  free(*line);
+  ft_putchar('\n');
+  printf("\nfile descriptor 2: %d\n", fd2);
+  free(line);
+}
+
+void test_memmove()
+{
+  char *str = ft_strdup("capiroto");
+
+  ft_putstr(str);
+  ft_putstr("\n" );
+  ft_memmove(str, str + 4, ft_strlen(str + 4) + 1);
+  ft_putstr(str);
+  ft_putstr("\n" );
+}
+
+void test_multiple_files()
 {
   char **line;
   int fd1;
   int fd2;
   int fd3;
   int fd4;
-  /*int i;
-    int n;
 
-    n = 0;
-    i = 0;*/
   line = (char **)ft_memalloc(sizeof(char *));
   ft_putnbr(BUFF_SIZE);
   ft_putchar('\n');
@@ -151,71 +304,32 @@ void test2()
   ft_putstr(*line);
   free(*line);
   ft_putstr("\n\n");
-
-  while (get_next_line(fd1, line))
-    {
-      ft_putnbr(ft_strlen(*line));
-      ft_putstr(":\t");
-      ft_putstr(*line);
-      free(*line);
-      ft_putchar('\n');
-    }
-  ft_putstr(":\t");
+  ft_putchar('\n');
+  get_next_line(fd1, line);
   ft_putstr(*line);
   free(*line);
+  ft_putstr("\n\n");
   ft_putchar('\n');
-
-  /* while (get_next_line(fd2, line))
-     {
-     ft_putnbr(ft_strlen(*line));
-     ft_putstr(":\t");
-     ft_putstr(*line);
-     ft_putchar('\n');
-     i++;
-     n+= ft_strlen(*line);
-     }
-     ft_putnbr(ft_strlen(*line));
-     ft_putstr(":\t");
-     ft_putstr(*line);
-     ft_putchar('\n');
-
-     char temp[10];
-     int k;
-
-     k = read(-42, temp, 10);
-     ft_putnbr(k);
-     ft_putchar('\n');
-     ft_putchar('\n');*/
-  
   ft_putstr("--------------------------------------\n");
   ft_putnbr(fd1);
   ft_putnbr(fd2);
   ft_putnbr(fd3);
   ft_putnbr(fd4);
-  int k = get_next_line(-1, line);
-  ft_putstr("\n");
-  ft_putstr("return value: ");
-  ft_putnbr(k);
-  ft_putstr("\n");
-  get_next_line(-1, line);
-
-  /*char *s1 = (char *)ft_memalloc(sizeof(char) * 10);  
-    char *s2 = (char *)ft_memalloc(sizeof(char) * 11);
-    ft_memmove(s1, "MOPA", sizeof(char)*5);
-    ft_memmove(s2, "CAPIROTICA", sizeof(char)*11);
-    ft_putendl(s1);
-    ft_putendl(s2);
-    char *str = ft_strjoin_free(s1, s2);
-    ft_putendl(s1);
-    ft_putendl(s2);
-    ft_putendl(str);*/
   free(line);
 }
 
 int main()
 {
   //test_btree();
-  printf("---------------------------------------\n");
-  test_del_btree();
+  //test_del_btree();
+  //  test_1full_file();
+  //  test_1partial_file();
+  //  test_2full_files_samefd();
+  //test_memmove();
+  //test_no_file();
+  test_2full_files_diffsfd();
+  //test_multiple_files();
+  //test_del_tree();
+  
   return (0);
 }

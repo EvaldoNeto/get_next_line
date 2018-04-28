@@ -30,19 +30,19 @@ t_btree *btree_deletenode_avl(t_btree **root, void *data, int (*cmpf)(void *, vo
     (*root)->right = btree_deletenode_avl(&((*root)->right), data, cmpf, del);
   else
     {
+      (*del)((*root)->data);
       if ((*root)->left == NULL || (*root)->right == NULL)
 	{
 	  temp = (((*root)->left) ? ((*root)->left) : ((*root)->right));
 	  if (!temp)
 	    {
-	      (*del)((*root)->data);
 	      free(*root);	 
 	      *root = NULL;
 	    }
 	  else
 	    {
-	      (*del)((*root)->data);
-	      ft_memmove(*root, temp, sizeof(t_btree));
+	      **root = *temp;
+	      //ft_memmove(*root, temp, sizeof(t_btree));
 	      free(temp);
 	    }
 	}

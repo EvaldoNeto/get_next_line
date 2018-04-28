@@ -46,5 +46,5 @@ t_btree			*btree_insert_avl(t_btree **ptr, void *data, size_t data_size,
 		return (rotate_left_right(ptr));
 	if (balance < -1 && (*cmpf)(data, (*ptr)->right->data) < 0)
 		return (rotate_right_left(ptr));
-	return ((*ptr));
+	return (*ptr);
 }
