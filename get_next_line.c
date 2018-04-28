@@ -31,26 +31,25 @@ int no_newline(const int fd, char *buff, char **line, int n)
 
   i = 0;
   *line = ft_strdup(buff);
-  if((n = read(fd, buff, BUFF_SIZE)) == -1 || !n)   
-      return (n);
-  if (n < BUFF_SIZE)
-    buff[n] = '\0';
-  while (!ft_strchr(buff, '\n'))
+  while (((n = read(fd, buff, BUFF_SIZE)) != 0))
     {
-      *line = ft_strjoin_free(*line, ft_strsub(buff, 0, n));
-      if((n = read(fd, buff, BUFF_SIZE)) == 0)
-	  return (1);
+      if (n == -1)
+	return (-1);
       if (n < BUFF_SIZE)
-	{
 	  buff[n] = '\0';
-	  *line = ft_strjoin_free(*line, buff);
+      if (ft_strchr(buff, '\n'))
+	{
+	  i = ft_strlen(buff) - ft_strlen(ft_strchr(buff, '\n'));
+	  *line = ft_strjoin_free(*line, ft_strsub(buff, 0, i));
+	  ft_memmove(buff, buff + i + 1, ft_strlen(buff + i + 1) + 1);
 	  return (1);
 	}
+      *line = ft_strjoin_free(*line, ft_strsub(buff, 0, n));
+      if (n < BUFF_SIZE)
+	return (1);
     }
-  i = ft_strlen(buff) - ft_strlen(ft_strchr(buff, '\n'));
-  *line = ft_strjoin_free(*line, ft_strsub(buff, 0, i));
-  if (ft_strchr(buff, '\n'))
-    ft_memmove(buff, buff + i + 1, ft_strlen(buff + i + 1) + 1);
+  if (n == 0)
+    return (0);
   return (1);
 }
 
@@ -93,6 +92,8 @@ int get_next_line(const int fd, char **line)
 
   temp.fd = fd;
   temp.buffer = NULL;
+  if (!line)
+    return (-1);
   if (!(node = btree_search_data(files, &temp, &compare_files)))
     {
 		btree_insert_avl(&files, &temp, sizeof(t_file), &compare_files);

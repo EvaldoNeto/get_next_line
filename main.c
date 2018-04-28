@@ -114,9 +114,7 @@ void test_1full_file()
       free(*line);
       ft_putchar('\n');
     }
-  ft_putstr(*line);
-  free(*line);
-  ft_putchar('\n');
+  free(line);
 }
 
 void test_1partial_file()
@@ -316,6 +314,23 @@ void test_multiple_files()
   free(line);
 }
 
+void test_simple_string()
+{
+  char **line;
+  
+  int fd1;
+  line = (char **)ft_memalloc(sizeof(char*));
+  fd1 = open("tests/simple_string", O_RDONLY);
+
+  while (get_next_line(fd1, line))
+    {
+      ft_putstr(*line);
+      free(*line);
+      ft_putchar('\n');
+    }
+  free(line);
+}
+
 int main()
 {
   //test_btree();
@@ -328,6 +343,7 @@ int main()
   //test_2full_files_diffsfd();
   //test_multiple_files();
   //test_del_tree();
+  test_simple_string();
   
   return (0);
 }
