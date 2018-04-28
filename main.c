@@ -152,9 +152,9 @@ void test_no_file()
   fd = open("tests/in_the_name", O_RDONLY);
   close(fd);
   n = get_next_line(fd, line);
-  ft_putstr(*line);
+  printf("file closed return value: %d\n", n);
   n = get_next_line(4, line);
-  printf("no file return value: %d\nline: %s\n", n, *line);
+  printf("no file return value: %d\nline:", n);
 }
 
 void test_2full_files_samefd()
@@ -171,8 +171,6 @@ void test_2full_files_samefd()
       free(*line);
       ft_putchar('\n');
     }
-  ft_putstr(*line);
-  free(*line);
   ft_putchar('\n');
   close(fd1);
   fd1 = open("tests/in_the_name", O_RDONLY);
@@ -182,8 +180,6 @@ void test_2full_files_samefd()
       free(*line);
       ft_putchar('\n');
     }
-  ft_putstr(*line);
-  free(*line);
   ft_putchar('\n');
   printf("%d\n", fd1);
 }
@@ -193,34 +189,36 @@ void test_2full_files_diffsfd()
   char **line;
   int fd1;
   int fd2;
+  int n;
   
   line = (char **)ft_memalloc(sizeof(char*));
   fd1 = open("tests/draft_browns", O_RDONLY);
   printf("%d\n", fd1);
-  while (get_next_line(fd1, line))
+  while ((n = get_next_line(fd1, line)))
     {
+      ft_putnbr(n);
+      ft_putstr(": ");
       ft_putstr(*line);
       free(*line);
       ft_putchar('\n');
     }
-  ft_putstr(*line);
-  free(*line);
   printf("%d\n", fd1);
   ft_putchar('\n');
   fd2 = open("tests/in_the_name", O_RDONLY);
-  while (get_next_line(fd2, line))
+  while ((n = get_next_line(fd2, line)))
     {
+      ft_putnbr(n);
+      ft_putstr(": ");
       ft_putstr(*line);
       free(*line);
       ft_putchar('\n');
     }
-  ft_putstr(*line);
   free(*line);
-  ft_putchar('\n');
-  printf("%d\n", fd2);
+  //ft_putchar('\n');
+  //printf("%d\n", fd2);
   free(line);
-  close(fd1);
-  close(fd2);
+  //close(fd1);
+  //close(fd2);
 }
 
 void test_del_tree()
@@ -324,10 +322,10 @@ int main()
   //test_del_btree();
   //  test_1full_file();
   //  test_1partial_file();
-  //  test_2full_files_samefd();
+  //test_2full_files_samefd();
   //test_memmove();
   //test_no_file();
-  test_2full_files_diffsfd();
+  //test_2full_files_diffsfd();
   //test_multiple_files();
   //test_del_tree();
   

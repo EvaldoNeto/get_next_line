@@ -38,13 +38,13 @@ int no_newline(const int fd, char *buff, char **line, int n)
   while (!ft_strchr(buff, '\n'))
     {
       *line = ft_strjoin_free(*line, ft_strsub(buff, 0, n));
-      if((n = read(fd, buff, BUFF_SIZE)) == -1 || !n)
-	  return (n);
+      if((n = read(fd, buff, BUFF_SIZE)) == 0)
+	  return (1);
       if (n < BUFF_SIZE)
 	{
 	  buff[n] = '\0';
 	  *line = ft_strjoin_free(*line, buff);
-	  return (0);
+	  return (1);
 	}
     }
   i = ft_strlen(buff) - ft_strlen(ft_strchr(buff, '\n'));
