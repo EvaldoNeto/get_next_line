@@ -17,10 +17,36 @@ static int btree_node_balance(t_btree *root)
   return (btree_height(root->left) - btree_height(root->right));
 }
 
+static void aux_function(t_btree **root, int (*cmpf)(void *, void *), void (*del)(void *))
+{
+  t_btree *temp;
+  
+  (*del)((*root)->data);
+  if ((*root)->left == NULL || (*root)->right == NULL)
+    {
+      temp = (((*root)->left) ? ((*root)->left) : ((*root)->right));
+      if (!temp)
+	{
+	  free(*root);	 
+	  *root = NULL;
+	}
+      else
+	{
+	  **root = *temp;
+	  free(temp);
+	}
+    }
+  else
+    {
+      temp = btree_min((*root)->right);
+      ft_memmove((*root)->data, temp->data, temp->data_size);	 
+      (*root)->right = btree_deletenode_avl(&(*root)->right, temp->data, cmpf, del);
+    }
+}
+
 t_btree *btree_deletenode_avl(t_btree **root, void *data, int (*cmpf)(void *, void *), void (*del)(void *))
 {
   int balance;
-  t_btree *temp;
 
   if (!(*root))
     return (NULL);
@@ -29,30 +55,7 @@ t_btree *btree_deletenode_avl(t_btree **root, void *data, int (*cmpf)(void *, vo
   else if ((*cmpf)(data, (*root)->data) > 0)
     (*root)->right = btree_deletenode_avl(&((*root)->right), data, cmpf, del);
   else
-    {
-      (*del)((*root)->data);
-      if ((*root)->left == NULL || (*root)->right == NULL)
-	{
-	  temp = (((*root)->left) ? ((*root)->left) : ((*root)->right));
-	  if (!temp)
-	    {
-	      free(*root);	 
-	      *root = NULL;
-	    }
-	  else
-	    {
-	      **root = *temp;
-	      //ft_memmove(*root, temp, sizeof(t_btree));
-	      free(temp);
-	    }
-	}
-      else
-	{
-	  temp = btree_min((*root)->right);
-	  ft_memmove((*root)->data, temp->data, temp->data_size);	 
-	  (*root)->right = btree_deletenode_avl(&(*root)->right, temp->data, cmpf, del);
-	}
-    }
+    aux_function(root, cmpf, del);
   if (!(*root))
     return (*root);
   balance = btree_height((*root)->left) - btree_height((*root)->right);
