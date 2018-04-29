@@ -16,19 +16,22 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
-void with_newline(char *buff, char **line)
+static int with_newline(char *buff, char **line)
 {
   int i;
 
   i = ft_strlen(buff) - ft_strlen(ft_strchr(buff, '\n'));
   *line = ft_strsub(buff, 0, i);
   ft_memmove(buff, buff + i + 1, ft_strlen(buff + i + 1) + 1);
+  return (1);
 }
 
-int no_newline(const int fd, char *buff, char **line, int n)
+static int no_newline(const int fd, char *buff, char **line)
 {
   int i;
+  int n;
 
+  n = 1;
   i = 0;
   *line = ft_strdup(buff);
   while (((n = read(fd, buff, BUFF_SIZE)) != 0))
@@ -48,9 +51,7 @@ int no_newline(const int fd, char *buff, char **line, int n)
       if (n < BUFF_SIZE)
 	return (1);
     }
-  if (n == 0)
-    return (0);
-  return (1);
+  return ((n == 0) ? (0) : (1));
 }
 
 static int compare_files(void *data1, void *data2)
@@ -67,27 +68,25 @@ static int compare_files(void *data1, void *data2)
   return (0);
 }
 
-void print_fd(void *data1)
+static int aux_function(const int fd, t_btree **root, t_btree *node, char **line)
 {
-	t_file *temp;
-
-	temp = (t_file *)data1;
-	ft_putnbr(temp->fd);
-}
-
-static int aux_function(int n, t_btree **root, t_file temp, char **line)
-{
-  btree_deletenode_avl(root, &temp, &compare_files, &free);
-  if (n == -1)
-    free(*line);
-  return (n);
+  int n;
+  
+  if (!(n = no_newline(fd, ((t_file *)(node->data))->buffer, line)) || n == -1)
+    {
+      btree_deletenode_avl(root, node->data, &compare_files, &free);
+      if (n == -1)
+	free(*line);
+      return (n);
+    }
+  return (1);
 }
 
 int get_next_line(const int fd, char **line)
 {
   static t_btree *files = NULL;
   t_file temp;
-  int n;
+  //  int n;
   t_btree *node;
 
   temp.fd = fd;
@@ -100,14 +99,11 @@ int get_next_line(const int fd, char **line)
 		node = btree_search_data(files, &temp, &compare_files);
     }
   if (!((t_file *)(node->data))->buffer)
-    if (!(((t_file *)(node->data))->buffer = (char *)ft_strnew(sizeof(char *) * (BUFF_SIZE + 1))))
+    if (!(((t_file *)(node->data))->buffer = ft_strnew((BUFF_SIZE + 1))))
       return (-1);
   if (!ft_strchr(((t_file *)(node->data))->buffer, '\n'))
-    {
-      if (!(n = no_newline(fd, ((t_file *)(node->data))->buffer, line, temp.fd)) || n == -1)
-	return (aux_function(n, &files, temp, line));
-    }
+      return (aux_function(fd, &files, node, line));
   else
-    with_newline(((t_file *)(node->data))->buffer, line);   
+    (with_newline(((t_file *)(node->data))->buffer, line));
   return (1);
 }

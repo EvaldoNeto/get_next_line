@@ -335,15 +335,15 @@ int main()
 {
   //test_btree();
   //test_del_btree();
-  //  test_1full_file();
+  test_1full_file();
   //  test_1partial_file();
   //test_2full_files_samefd();
   //test_memmove();
   //test_no_file();
-  //test_2full_files_diffsfd();
+  //  test_2full_files_diffsfd();
   //test_multiple_files();
   //test_del_tree();
-  test_simple_string();
+  //test_simple_string();
   
   return (0);
 }
