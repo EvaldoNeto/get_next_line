@@ -27,7 +27,8 @@ char		*ft_strtrim(char const *s)
 	if (j > 0 && !s[j])
 	{
 		if (!(str = (char *)malloc(sizeof(char))))
-			str[0] = '\0';
+		  return (NULL);
+		str[0] = '\0';
 		return (char *)(str);
 	}
 	while (s[i] == ' ' || s[i] == '\n' || s[i] == '\t')
