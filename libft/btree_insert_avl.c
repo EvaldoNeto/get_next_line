@@ -6,7 +6,7 @@
 /*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/26 17:38:53 by eneto             #+#    #+#             */
-/*   Updated: 2018/04/26 23:22:37 by eneto            ###   ########.fr       */
+/*   Updated: 2018/05/01 13:42:13 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ t_btree			*btree_insert_avl(t_btree **ptr, void *data, size_t data_size,
 	if ((*cmpf)(data, (*ptr)->data) < 0)
 		(*ptr)->left = btree_insert_avl(&((*ptr)->left), data, data_size, cmpf);
 	else if ((*cmpf)(data, (*ptr)->data) > 0)
-		(*ptr)->right = btree_insert_avl(&((*ptr)->right), data, data_size, cmpf);
+		(*ptr)->right = btree_insert_avl(&((*ptr)->right), data,
+									data_size, cmpf);
 	else
 		return (*ptr);
 	balance = btree_height((*ptr)->left) - btree_height((*ptr)->right);

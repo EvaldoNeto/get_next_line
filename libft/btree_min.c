@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   btree_min.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/01 13:40:56 by eneto             #+#    #+#             */
+/*   Updated: 2018/05/01 13:41:21 by eneto            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 
-t_btree *btree_min(t_btree *root)
+t_btree	*btree_min(t_btree *root)
 {
-  if (!root)
-    return (NULL);
-  while (root->left)
-    root = root->left;
-  return (root);
+	if (!root)
+		return (NULL);
+	while (root->left)
+		root = root->left;
+	return (root);
 }

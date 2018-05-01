@@ -6,7 +6,7 @@
 /*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 19:38:49 by eneto             #+#    #+#             */
-/*   Updated: 2018/04/09 19:49:09 by eneto            ###   ########.fr       */
+/*   Updated: 2018/05/01 13:40:13 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char		*ft_strtrim(char const *s)
 	if (j > 0 && !s[j])
 	{
 		if (!(str = (char *)malloc(sizeof(char))))
-		  return (NULL);
+			return (NULL);
 		str[0] = '\0';
 		return (char *)(str);
 	}

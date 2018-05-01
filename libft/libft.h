@@ -6,7 +6,7 @@
 /*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 19:42:22 by eneto             #+#    #+#             */
-/*   Updated: 2018/04/26 17:35:23 by eneto            ###   ########.fr       */
+/*   Updated: 2018/05/01 13:43:44 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,9 @@ t_btree				*btree_insert_avl(t_btree **root, void *data,
 					size_t data_size, int (*cmpf)(void *, void *));
 t_btree				*btree_search_data(t_btree *root, void *data,
 					int (*cmpf)(void *, void *));
-t_btree *btree_min(t_btree *root);
-char *ft_strjoin_free(char *s1, char *s2);
-t_btree *btree_deletenode_avl(t_btree **root, void *data, int (*cmpf)(void *, void *), void (*del)(void *));
+t_btree				*btree_min(t_btree *root);
+char				*ft_strjoin_free(char *s1, char *s2);
+t_btree				*btree_deletenode_avl(t_btree **root, void *data,
+							int (*cmpf)(void *, void *), void (*del)(void *));
 
 #endif
