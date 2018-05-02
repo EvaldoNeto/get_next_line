@@ -96,8 +96,8 @@ int			get_next_line(const int fd, char **line)
 		return (-1);
 	if (!(node = btree_search_data(files, &temp, &compare_files)))
 	{
-		btree_insert_avl(&files, &temp, sizeof(t_file), &compare_files);
-		node = btree_search_data(files, &temp, &compare_files);
+	  node =	btree_insert_avl(&files, &temp, sizeof(t_file), &compare_files);
+	  //node = btree_search_data(files, &temp, &compare_files);
 	}
 	if (!((t_file *)(node->data))->buffer)
 		if (!(((t_file *)(node->data))->buffer = ft_strnew((BUFF_SIZE + 1))))

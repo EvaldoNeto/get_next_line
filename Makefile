@@ -17,7 +17,8 @@ FLAGS = -Wall -Wextra -Werror
 NAME = get_next_line
 
 FILES =		get_next_line.c	\
-			main.c
+		main.c		\
+		gnl.c
 
 F_DIR = .
 SRCS = $(addprefix $(F_DIR)/, $(FILES))

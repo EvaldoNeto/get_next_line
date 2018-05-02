@@ -108,7 +108,7 @@ void test_1full_file()
   line = (char **)ft_memalloc(sizeof(char*));
   fd1 = open("tests/in_the_name", O_RDONLY);
 
-  while (get_next_line(fd1, line))
+  while (gnl(fd1, line))
     {
       ft_putstr(*line);
       free(*line);
@@ -126,7 +126,7 @@ void test_1partial_file()
   line = (char **)ft_memalloc(sizeof(char*));
   fd1 = open("tests/in_the_name", O_RDONLY);
   i = 0;
-  while (get_next_line(fd1, line) && i < 10)
+  while (gnl(fd1, line) && i < 10)
     {
       ft_putstr(*line);
       free(*line);
@@ -149,9 +149,9 @@ void test_no_file()
   printf("mopa: %s\n", *line);
   fd = open("tests/in_the_name", O_RDONLY);
   close(fd);
-  n = get_next_line(fd, line);
+  n = gnl(fd, line);
   printf("file closed return value: %d\n", n);
-  n = get_next_line(4, line);
+  n = gnl(4, line);
   printf("no file return value: %d\nline:", n);
 }
 
@@ -163,7 +163,7 @@ void test_2full_files_samefd()
   line = (char **)ft_memalloc(sizeof(char*));
   fd1 = open("tests/draft_browns", O_RDONLY);
   printf("%d\n", fd1);
-  while (get_next_line(fd1, line))
+  while (gnl(fd1, line))
     {
       ft_putstr(*line);
       free(*line);
@@ -172,7 +172,7 @@ void test_2full_files_samefd()
   ft_putchar('\n');
   close(fd1);
   fd1 = open("tests/in_the_name", O_RDONLY);
-  while (get_next_line(fd1, line))
+  while (gnl(fd1, line))
     {
       ft_putstr(*line);
       free(*line);
@@ -192,7 +192,7 @@ void test_2full_files_diffsfd()
   line = (char **)ft_memalloc(sizeof(char*));
   fd1 = open("tests/draft_browns", O_RDONLY);
   printf("%d\n", fd1);
-  while ((n = get_next_line(fd1, line)))
+  while ((n = gnl(fd1, line)))
     {
       ft_putnbr(n);
       ft_putstr(": ");
@@ -203,7 +203,7 @@ void test_2full_files_diffsfd()
   printf("%d\n", fd1);
   ft_putchar('\n');
   fd2 = open("tests/in_the_name", O_RDONLY);
-  while ((n = get_next_line(fd2, line)))
+  while ((n = gnl(fd2, line)))
     {
       ft_putnbr(n);
       ft_putstr(": ");
@@ -227,13 +227,13 @@ void test_del_tree()
   
   line = (char **)ft_memalloc(sizeof(char*));
   fd1 = open("tests/draft_browns", O_RDONLY);
-  while (get_next_line(fd1, line))
+  while (gnl(fd1, line))
       free(*line);
   free(*line);
   printf("\nfile descriptor 1: %d\n", fd1);
   ft_putchar('\n');
   fd2 = open("tests/in_the_name", O_RDONLY);
-  while (get_next_line(fd2, line))
+  while (gnl(fd2, line))
       free(*line);
   free(*line);
   ft_putchar('\n');
@@ -268,40 +268,40 @@ void test_multiple_files()
   fd3 = open("tests/game_of_thrones", O_RDONLY);
   fd4 = open("tests/inorder_traversal", O_RDONLY);
 
-  get_next_line(fd1, line);
+  gnl(fd1, line);
   ft_putstr(*line);
   free(*line);
   ft_putstr("\n\n");
-  get_next_line(fd2, line);
+  gnl(fd2, line);
   ft_putstr(*line);
   free(*line);
   ft_putstr("\n\n");
-  get_next_line(fd1, line);
+  gnl(fd1, line);
   ft_putstr(*line);
   free(*line);
   ft_putstr("\n\n");
-  get_next_line(fd3, line);
+  gnl(fd3, line);
   ft_putstr(*line);
   free(*line);
   ft_putstr("\n\n");
-  get_next_line(fd4, line);
+  gnl(fd4, line);
   ft_putstr(*line);
   free(*line);
   ft_putstr("\n\n");
-  get_next_line(fd1, line);
+  gnl(fd1, line);
   ft_putstr(*line);
   free(*line);
   ft_putstr("\n\n");
-  get_next_line(fd1, line);
+  gnl(fd1, line);
   ft_putstr(*line);
   free(*line);
   ft_putstr("\n\n");
-  get_next_line(fd3, line);
+  gnl(fd3, line);
   ft_putstr(*line);
   free(*line);
   ft_putstr("\n\n");
   ft_putchar('\n');
-  get_next_line(fd1, line);
+  gnl(fd1, line);
   ft_putstr(*line);
   free(*line);
   ft_putstr("\n\n");
@@ -322,7 +322,7 @@ void test_simple_string()
   line = (char **)ft_memalloc(sizeof(char*));
   fd1 = open("tests/simple_string", O_RDONLY);
 
-  while (get_next_line(fd1, line))
+  while (gnl(fd1, line))
     {
       ft_putstr(*line);
       free(*line);
@@ -335,7 +335,7 @@ int main()
 {
   //test_btree();
   //test_del_btree();
-  test_1full_file();
+  //test_1full_file();
   //  test_1partial_file();
   //test_2full_files_samefd();
   //test_memmove();
@@ -343,7 +343,7 @@ int main()
   //  test_2full_files_diffsfd();
   //test_multiple_files();
   //test_del_tree();
-  //test_simple_string();
+  test_simple_string();
   
   return (0);
 }
