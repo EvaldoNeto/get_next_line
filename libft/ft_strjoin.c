@@ -25,15 +25,15 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		if (!(str = (char *)malloc(sizeof(char) * (i + j + 1))))
 			return (NULL);
 		str[i + j] = '\0';
-		while (j-- > -1)
+		while (--j > -1)
 			str[i + j] = s2[j];
-		while (i-- > -1)
+		while (--i > -1)
 			str[i] = s1[i];
 		return (str);
 	}
 	if (s1 && !s2)
-		return ((char *)s1);
+	    return (ft_strdup(s1));
 	if (!s1 && s2)
-		return ((char *)s2);
+	    return (ft_strdup(s2));
 	return (NULL);
 }

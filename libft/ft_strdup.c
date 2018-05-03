@@ -17,6 +17,8 @@ char	*ft_strdup(const char *s)
 	char	*str;
 	int		i;
 
+	if (!s)
+	  return (NULL);
 	i = 0;
 	while (s[i] != '\0')
 		i++;
