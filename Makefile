@@ -6,7 +6,7 @@
 #    By: eneto <marvin@42.fr>                       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/04/19 19:05:57 by eneto             #+#    #+#              #
-#    Updated: 2018/04/26 22:06:51 by eneto            ###   ########.fr        #
+#    Updated: 2018/05/03 13:09:41 by eneto            ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -17,8 +17,7 @@ FLAGS = -Wall -Wextra -Werror
 NAME = get_next_line
 
 FILES =		get_next_line.c	\
-		main.c		\
-		gnl.c
+			main.c		
 
 F_DIR = .
 SRCS = $(addprefix $(F_DIR)/, $(FILES))

@@ -6,7 +6,7 @@
 /*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 19:20:56 by eneto             #+#    #+#             */
-/*   Updated: 2018/04/08 20:43:40 by eneto            ###   ########.fr       */
+/*   Updated: 2018/05/03 13:16:29 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (str);
 	}
 	if (s1 && !s2)
-	    return (ft_strdup(s1));
+		return (ft_strdup(s1));
 	if (!s1 && s2)
-	    return (ft_strdup(s2));
+		return (ft_strdup(s2));
 	return (NULL);
 }

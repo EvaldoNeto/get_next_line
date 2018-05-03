@@ -6,7 +6,7 @@
 /*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/01 13:31:35 by eneto             #+#    #+#             */
-/*   Updated: 2018/05/01 13:31:53 by eneto            ###   ########.fr       */
+/*   Updated: 2018/05/03 13:21:06 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ char	*ft_strjoin_free(char *s1, char *s2)
 	if (!(str = ft_strjoin(s1, s2)))
 		return (NULL);
 	if (s1 && *s1)
-	    free(s1);
+		free(s1);
 	if (s2 && *s2)
-	    free(s2);
+		free(s2);
 	return (str);
 }

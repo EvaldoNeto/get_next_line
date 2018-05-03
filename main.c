@@ -6,7 +6,7 @@
 /*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/26 20:23:38 by eneto             #+#    #+#             */
-/*   Updated: 2018/04/26 23:20:36 by eneto            ###   ########.fr       */
+/*   Updated: 2018/05/03 13:26:27 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -418,19 +418,19 @@ void test_simple_file()
   get_next_line(p[0], &line);
   if(ft_strcmp(line, "aaa") == 0)
     count++;
-  printf("%s\n", line);
+//  printf("%s\n", line);
   get_next_line(p[0], &line);
   if(ft_strcmp(line, "bbb") == 0)
     count++;
-  printf("%s\n", line);
+//  printf("%s\n", line);
   get_next_line(p[0], &line);
   if(ft_strcmp(line, "ccc") == 0)
     count++;
-  printf("%s\n", line);
+//  printf("%s\n", line);
   get_next_line(p[0], &line);
   if(ft_strcmp(line, "ddd") == 0)
     count++;
-  printf("%s\n", line);
+//  printf("%s\n", line);
   ret = get_next_line(p[0], &line);
   if (ret == 0 && count == 4)
     printf("test_simple_file: [OK]!\n");
@@ -492,7 +492,7 @@ void test_multi_file()
   int		fd3 = 3;
   int		out_fd3 = dup(fd3);
 
-  printf("COMECOU\n");
+//  printf("COMECOU\n");
   
   pipe(p_fd0);
   dup2(p_fd0[1], fd0);
@@ -581,11 +581,11 @@ int main()
   //  test_2full_files_diffsfd();
   //test_del_tree();
   //  test_simple_string();
-  //test_stream();
-  //  test_simple_file();
-  //  test_pipe();
-  //  test_2_lines();
-  test_multi_file();
+	/*test_stream();*/
+	test_simple_file();
+	test_pipe();
+	test_2_lines();
+	test_multi_file();
   //  test_multiple_files();
   return (0);
 }

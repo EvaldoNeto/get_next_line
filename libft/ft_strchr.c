@@ -6,7 +6,7 @@
 /*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/05 19:08:56 by eneto             #+#    #+#             */
-/*   Updated: 2018/04/05 20:03:38 by eneto            ###   ########.fr       */
+/*   Updated: 2018/05/03 13:19:15 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_strchr(const char *s, int c)
 
 	i = 0;
 	if (!s)
-	  return (NULL);
+		return (NULL);
 	while (s[i])
 	{
 		if (s[i] == c)
