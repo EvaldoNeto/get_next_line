@@ -6,7 +6,7 @@
 /*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/04/26 20:19:50 by eneto             #+#    #+#             */
-/*   Updated: 2018/05/03 14:06:07 by eneto            ###   ########.fr       */
+/*   Updated: 2018/05/03 15:43:48 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,51 +30,53 @@ static int	compare_files(void *data1, void *data2)
 	return (0);
 }
 
-static int	aux_function(const int fd, t_btree **files, t_btree *node,
+static int	aux_function(const int fd, t_btree **files, t_btree **node,
 						t_file *temp)
 {
 	int n;
 
-	if (((t_file *)(node->data))->buffer == NULL)
+	if (((t_file *)((*node)->data))->buffer == NULL)
 	{
-		if (!(((t_file *)(node->data))->buffer = ft_strnew((BUFF_SIZE + 1))))
+		if (!(((t_file *)((*node)->data))->buffer = ft_strnew((BUFF_SIZE + 1))))
 			return (-1);
-		if ((n = read(fd, ((t_file *)(node->data))->buffer, BUFF_SIZE)) == -1)
+		if ((n = read(fd, ((t_file *)((*node)->data))->buffer,
+			BUFF_SIZE)) == -1)
 		{
-			free(((t_file *)(node->data))->buffer);
-			((t_file *)(node->data))->buffer = NULL;
+			free(((t_file *)((*node)->data))->buffer);
+			((t_file *)((*node)->data))->buffer = NULL;
 			btree_deletenode_avl(files, &temp, &compare_files, &free);
 			return (-1);
 		}
 		if (n == 0)
 		{
-			free(((t_file *)(node->data))->buffer);
-			((t_file *)(node->data))->buffer = NULL;
+			free(((t_file *)((*node)->data))->buffer);
+			((t_file *)((*node)->data))->buffer = NULL;
 			return (0);
 		}
 	}
 	return (1);
 }
 
-static int	aux_function2(t_btree *node, char **line)
+static int	aux_function2(t_btree **node, char **line)
 {
 	int n;
 
-	n = ft_strlen((((t_file *)(node->data))->buffer)) -
-		ft_strlen(ft_strchr((((t_file *)(node->data))->buffer), '\n'));
+	n = ft_strlen((((t_file *)((*node)->data))->buffer)) -
+		ft_strlen(ft_strchr((((t_file *)((*node)->data))->buffer), '\n'));
 	*line = ft_strjoin_free(*line,
-						ft_strsub((((t_file *)(node->data))->buffer), 0, n));
-	ft_memmove((((t_file *)(node->data))->buffer), (((t_file *)(node->data))->
-	buffer) + n + 1, ft_strlen((((t_file *)(node->data))->buffer) + n + 1) + 1);
-	if ((((t_file *)(node->data))->buffer)[0] == '\0')
+						ft_strsub((((t_file *)((*node)->data))->buffer), 0, n));
+	ft_memmove((((t_file *)((*node)->data))->buffer),
+		(((t_file *)((*node)->data))->buffer) + n + 1,
+		ft_strlen((((t_file *)((*node)->data))->buffer) + n + 1) + 1);
+	if ((((t_file *)((*node)->data))->buffer)[0] == '\0')
 	{
-		free(((t_file *)(node->data))->buffer);
-		((t_file *)(node->data))->buffer = NULL;
+		free(((t_file *)((*node)->data))->buffer);
+		((t_file *)((*node)->data))->buffer = NULL;
 	}
 	return (1);
 }
 
-int			gnl(const int fd, char **line, t_btree **files, t_file temp)
+static int	gnl(const int fd, char **line, t_btree **files, t_file temp)
 {
 	t_btree	*node;
 	int		n;
@@ -84,10 +86,10 @@ int			gnl(const int fd, char **line, t_btree **files, t_file temp)
 		btree_insert_avl(files, &temp, sizeof(t_file), &compare_files);
 		node = btree_search_data(*files, &temp, &compare_files);
 	}
-	if ((n = aux_function(fd, files, node, &temp)) == 0 || n == -1)
+	if ((n = aux_function(fd, files, &node, &temp)) == 0 || n == -1)
 		return (n);
 	if (ft_strchr(((t_file *)(node->data))->buffer, '\n'))
-		return (aux_function2(node, line));
+		return (aux_function2(&node, line));
 	else
 	{
 		*line = ft_strjoin_free(*line, ((t_file *)(node->data))->buffer);
@@ -111,5 +113,10 @@ int			get_next_line(const int fd, char **line)
 	n = (gnl(fd, line, &files, temp));
 	if (n == 0)
 		btree_deletenode_avl(&files, &temp, &compare_files, &free);
+	if (btree_height(files) == 0)
+	{
+		free(files);
+		files = NULL;
+	}
 	return (n);
 }
