@@ -93,7 +93,8 @@ SRCS =		ft_atoi.c	\
 		btree_search_data.c	\
 		ft_strjoin_free.c	\
 		btree_min.c		\
-		btree_deletenode_avl.c
+		btree_deletenode_avl.c	\
+		get_next_line.c
 
 OBJ = $(SRCS:.c=.o)
 
